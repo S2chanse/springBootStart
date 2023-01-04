@@ -1,5 +1,6 @@
 package com.example.demo.others.config;
 
+import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.MemoryMemberRepository;
 import com.example.demo.service.MemberService;
 import org.springframework.context.annotation.Bean;
@@ -10,11 +11,11 @@ public class SpringConfig {
 
     @Bean
     public MemberService memberService(){
-        return new MemberService(memoryMemberRepository());
+        return new MemberService(memberRepository());
     }
 
     @Bean
-    public MemoryMemberRepository memoryMemberRepository(){
+    public MemberRepository memberRepository(){
         return new MemoryMemberRepository();
     }
 }

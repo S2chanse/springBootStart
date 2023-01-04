@@ -13,7 +13,7 @@ public class MemoryMemberRepository implements MemberRepository{
 
     @Override
     public Member save(Member member) {
-        member.setId(++sequence);
+        member.setId(new Date().getTime());
         store.put(member.getId(),member);
         return member;
     }

@@ -8,12 +8,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class MemberService {
 
     public final MemoryMemberRepository mmr;
 
-    @Autowired
     public MemberService(MemoryMemberRepository mmr) {
         this.mmr = mmr;
     }

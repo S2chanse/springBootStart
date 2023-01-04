@@ -1,7 +1,12 @@
 package com.example.demo.domain;
 
+import javax.persistence.*;
+
+@Entity
 public class Member {
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name="username")
     private String name;
 
     public long getId() {

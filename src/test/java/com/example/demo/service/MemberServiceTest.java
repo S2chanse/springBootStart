@@ -7,6 +7,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -15,30 +18,22 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@Transactional
 class MemberServiceTest {
-    MemberService ms;
-    MemoryMemberRepository mmr;
+    @Autowired MemberService memberService;
+    @Autowired MemberRepository memberRepository;
 
-    @BeforeEach
-    public void beforeEach(){
-        mmr = new MemoryMemberRepository();
-        ms = new MemberService(mmr);
-    }
-
-    @AfterEach
-    public void afterClean(){
-        mmr.clearStrore();
-    }
 
     @Test
     void join() {
         //given
         Member member = new Member();
-        member.setName("기러기");
+        member.setName("기러기2");
 
         //when
-        Long returnId = ms.join(member);
-        Long compareId = ms.findMember(member.getName()).get().getId();
+        Long returnId = memberService.join(member);
+        Long compareId = memberService.findMember(member.getName()).get().getId();
 
         //then
         assertThat(returnId).isEqualTo(compareId);
@@ -54,9 +49,9 @@ class MemberServiceTest {
         Member member2 = new Member();
         member2.setName("기러기");
         //when
-        ms.join(member1);
+        memberService.join(member1);
         //에러 처리 매서드
-        IllegalStateException ise = assertThrows(IllegalStateException.class,()->ms.join(member2));
+        IllegalStateException ise = assertThrows(IllegalStateException.class,()->memberService.join(member2));
         assertThat(ise.getMessage()).isEqualTo("이미 존재하는 유저입니다.");
 
 //        try{

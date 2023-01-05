@@ -9,9 +9,14 @@ import java.util.Optional;
 public class JPAMemberRepository implements MemberRepository{
     private EntityManager em;
 
+    public JPAMemberRepository(EntityManager em) {
+        this.em = em;
+    }
+
     @Override
     public Member save(Member member) {
         em.persist(member);
+        System.out.println(member.getName());
         return member;
     }
 
@@ -24,14 +29,15 @@ public class JPAMemberRepository implements MemberRepository{
 
     @Override
     public Optional<Member> findByName(String name) {
+        List<Member> result = em.createQuery("select m from Member m where m.name = :name",Member.class).setParameter("name",name).getResultList();
 
-        return Optional.ofNullable(null);
+        return result.stream().findAny();
 
     }
 
     @Override
     public List<Member> findAll() {
 
-        return em.createQuery("select * from Member",Member.class).getResultList();
+        return em.createQuery("select m from Member m",Member.class).getResultList();
     }
 }
